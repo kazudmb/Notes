@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import com.dmb.notes.adapters.NotesRecyclerAdapter;
 import com.dmb.notes.models.Note;
@@ -28,6 +29,9 @@ public class NotesListActivity extends AppCompatActivity {
 
         initRecyclerView();
         insertFakeNotes();
+
+        setSupportActionBar((Toolbar)findViewById(R.id.notes_toolbar));
+        setTitle("Notes");
     }
 
     private void insertFakeNotes(){
