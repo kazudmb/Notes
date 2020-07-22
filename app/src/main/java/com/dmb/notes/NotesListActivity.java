@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.dmb.notes.adapters.NotesRecyclerAdapter;
 import com.dmb.notes.models.Note;
+import com.dmb.notes.util.VerticalSpacingItemDecorator;
 
 import java.util.ArrayList;
 
@@ -42,6 +43,8 @@ public class NotesListActivity extends AppCompatActivity {
 
     private void initRecyclerView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        VerticalSpacingItemDecorator verticalSpacingItemDecorator = new VerticalSpacingItemDecorator(10);
+        recyclerView.addItemDecoration(verticalSpacingItemDecorator);
         recyclerView.setLayoutManager(linearLayoutManager);
         notesRecyclerAdapter = new NotesRecyclerAdapter(notes);
         recyclerView.setAdapter(notesRecyclerAdapter);
