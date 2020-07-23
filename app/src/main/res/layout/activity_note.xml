@@ -16,6 +16,7 @@
             android:layout_height="match_parent"
             android:id="@+id/note_toolbar">
 
+            <include layout="@layout/layout_note_toolbar"/>
 
         </android.support.v7.widget.Toolbar>
 
