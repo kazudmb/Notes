@@ -17,7 +17,8 @@ import com.dmb.notes.models.Note;
 public class NoteActivity extends AppCompatActivity implements
         View.OnTouchListener,
         GestureDetector.OnGestureListener,
-        GestureDetector.OnDoubleTapListener
+        GestureDetector.OnDoubleTapListener,
+        View.OnClickListener
 {
 
     private static final String TAG = "NoteActivity";
@@ -64,6 +65,8 @@ public class NoteActivity extends AppCompatActivity implements
     private void setListeners() {
         linedEditText.setOnTouchListener(this);
         gestureDetector = new GestureDetector(this, this);
+        viewTitle.setOnClickListener(this);
+        check.setOnClickListener(this);
     }
 
     private boolean getIncomingIntent() {
@@ -161,5 +164,28 @@ public class NoteActivity extends AppCompatActivity implements
     @Override
     public boolean onDoubleTapEvent(MotionEvent e) {
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.toolbar_check: {
+                disableEditMode();
+                break;
+            }
+            case R.id.note_text_title: {
+                enableEditMode();
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mode == EDIT_MODE_ENABLED) {
+            onClick(check);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
