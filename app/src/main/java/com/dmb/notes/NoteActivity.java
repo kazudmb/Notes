@@ -7,6 +7,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dmb.notes.models.Note;
@@ -19,16 +21,21 @@ public class NoteActivity extends AppCompatActivity implements
 {
 
     private static final String TAG = "NoteActivity";
+    private static final int EDIT_MODE_ENABLED = 1;
+    private static final int EDIT_MODE_DISABLED = 0;
 
     // ui components
     private LinedEditText linedEditText;
     private EditText editTitle;
     private TextView viewTitle;
+    private RelativeLayout checkContainer, backArrorContainer;
+    private ImageButton check, backArror;
 
     // vars
     private boolean isNewNote;
     private Note noteInitial;
     private GestureDetector gestureDetector;
+    private int mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +44,15 @@ public class NoteActivity extends AppCompatActivity implements
         linedEditText = findViewById(R.id.note_text);
         editTitle = findViewById(R.id.note_edit_title);
         viewTitle = findViewById(R.id.note_text_title);
+        checkContainer = findViewById(R.id.check_container);
+        backArrorContainer = findViewById(R.id.back_arrow_container);
+        check = findViewById(R.id.toolbar_check);
+        backArror = findViewById(R.id.toolbar_back_arrow);
 
         if (getIncomingIntent()) {
             // this is a new note, (EDIT MODE)
             setNewNoteProperties();
+            enableEditMode();
         } else {
             // this is NOT a new note, (VIEW MODE)
             setNoteProperties();
@@ -59,11 +71,33 @@ public class NoteActivity extends AppCompatActivity implements
             noteInitial = getIntent().getParcelableExtra("selected_note");
             Log.d(TAG, "onCreate: " + noteInitial.toString());
 
+            mode = EDIT_MODE_DISABLED;
             isNewNote = false;
             return false;
         }
+        mode = EDIT_MODE_ENABLED;
         isNewNote = true;
         return true;
+    }
+
+    private void enableEditMode() {
+        backArrorContainer.setVisibility(View.GONE);
+        checkContainer.setVisibility(View.VISIBLE);
+
+        viewTitle.setVisibility(View.GONE);
+        editTitle.setVisibility(View.VISIBLE);
+
+        mode = EDIT_MODE_ENABLED;
+    }
+
+    private void disableEditMode() {
+        backArrorContainer.setVisibility(View.VISIBLE);
+        checkContainer.setVisibility(View.GONE);
+
+        viewTitle.setVisibility(View.VISIBLE);
+        editTitle.setVisibility(View.GONE);
+
+        mode = EDIT_MODE_DISABLED;
     }
 
     private void setNewNoteProperties() {
@@ -120,6 +154,7 @@ public class NoteActivity extends AppCompatActivity implements
     @Override
     public boolean onDoubleTap(MotionEvent e) {
         Log.d(TAG, "onDoubleTap: double tapped!");
+        enableEditMode();
         return false;
     }
 
