@@ -70,6 +70,7 @@ public class NoteActivity extends AppCompatActivity implements
         gestureDetector = new GestureDetector(this, this);
         viewTitle.setOnClickListener(this);
         check.setOnClickListener(this);
+        backArror.setOnClickListener(this);
     }
 
     private boolean getIncomingIntent() {
@@ -208,6 +209,10 @@ public class NoteActivity extends AppCompatActivity implements
             }
             case R.id.note_text_title: {
                 enableEditMode();
+                break;
+            }
+            case R.id.toolbar_back_arrow: {
+                finish();
                 break;
             }
         }
