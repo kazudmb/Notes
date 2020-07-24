@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 import com.dmb.notes.adapters.NotesRecyclerAdapter;
 import com.dmb.notes.models.Note;
@@ -14,7 +15,10 @@ import com.dmb.notes.util.VerticalSpacingItemDecorator;
 
 import java.util.ArrayList;
 
-public class NotesListActivity extends AppCompatActivity implements NotesRecyclerAdapter.OnNoteListener{
+public class NotesListActivity extends AppCompatActivity implements
+        NotesRecyclerAdapter.OnNoteListener,
+        View.OnClickListener
+{
 
     private static final String TAG = "NotesListActivity";
 
@@ -30,6 +34,8 @@ public class NotesListActivity extends AppCompatActivity implements NotesRecycle
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes_list);
         recyclerView = findViewById(R.id.recyclerView);
+
+        findViewById(R.id.fab).setOnClickListener(this);
 
         initRecyclerView();
         insertFakeNotes();
@@ -64,6 +70,12 @@ public class NotesListActivity extends AppCompatActivity implements NotesRecycle
 
         Intent intent = new Intent(this, NoteActivity.class);
         intent.putExtra("selected_note", notes.get(position));
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(this, NoteActivity.class);
         startActivity(intent);
     }
 }
