@@ -226,4 +226,19 @@ public class NoteActivity extends AppCompatActivity implements
             super.onBackPressed();
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("mode", mode);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mode = savedInstanceState.getInt("mode");
+        if (mode == EDIT_MODE_ENABLED){
+            enableEditMode();
+        }
+    }
 }
