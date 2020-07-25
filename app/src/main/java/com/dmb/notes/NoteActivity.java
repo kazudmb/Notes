@@ -39,6 +39,7 @@ public class NoteActivity extends AppCompatActivity implements
     private GestureDetector mGestureDetector;
     private int mMode;
     private NoteRepository mNoteRepository;
+    private Note mFinalNote;
 
 
     @Override
@@ -78,7 +79,7 @@ public class NoteActivity extends AppCompatActivity implements
     }
 
     public void saveNewNote() {
-        mNoteRepository.insertNoteTask(mNoteInitial);
+        mNoteRepository.insertNoteTask(mFinalNote);
     }
 
     private void setListeners(){
@@ -92,6 +93,7 @@ public class NoteActivity extends AppCompatActivity implements
     private boolean getIncomingIntent(){
         if(getIntent().hasExtra("selected_note")){
             mNoteInitial = getIntent().getParcelableExtra("selected_note");
+            mFinalNote = getIntent().getParcelableExtra("selected_note");
 
             mMode = EDIT_MODE_ENABLED;
             mIsNewNote = false;
@@ -141,12 +143,31 @@ public class NoteActivity extends AppCompatActivity implements
 
         disableContentInteraction();
 
-        saveChanges();
+
+        String temp = mLinedEditText.getText().toString();
+        temp = temp.replace("\n", "");
+        temp = temp.replace(" ", "");
+        if(temp.length() > 0){
+            mFinalNote.setTitle(mEditTitle.getText().toString());
+            mFinalNote.setContent(mLinedEditText.getText().toString());
+            String timestamp = "Jan 2019";
+            mFinalNote.setTimestamp(timestamp);
+
+            if(!mFinalNote.getContent().equals(mNoteInitial.getContent())
+                    || !mFinalNote.getTitle().equals(mNoteInitial.getTitle())){
+                saveChanges();
+            }
+        }
     }
 
     private void setNewNoteProperties(){
         mViewTitle.setText("Note Title");
         mEditTitle.setText("Note Title");
+
+        mNoteInitial = new Note();
+        mFinalNote = new Note();
+        mNoteInitial.setTitle("Note Title");
+        mFinalNote.setTitle("Note Title");
     }
 
     private void setNoteProperties(){
