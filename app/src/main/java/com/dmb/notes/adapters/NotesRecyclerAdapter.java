@@ -17,54 +17,56 @@ public class NotesRecyclerAdapter extends RecyclerView.Adapter<NotesRecyclerAdap
 
     private static final String TAG = "NotesRecyclerAdapter";
 
-    private ArrayList<Note> notes = new ArrayList<>();
-    private OnNoteListener onNoteListener;
+    private ArrayList<Note> mNotes = new ArrayList<>();
+    private OnNoteListener mOnNoteListener;
 
-    public NotesRecyclerAdapter(ArrayList<Note> notes, OnNoteListener onNoteListener) {
-        this.notes = notes;
-        this.onNoteListener = onNoteListener;
+    public NotesRecyclerAdapter(ArrayList<Note> mNotes, OnNoteListener onNoteListener) {
+        this.mNotes = mNotes;
+        this.mOnNoteListener = onNoteListener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_note_list_item, parent, false);
-        return new ViewHolder(view, onNoteListener);
+        return new ViewHolder(view, mOnNoteListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.timestamp.setText(notes.get(position).getTimestampe());
-        holder.title.setText(notes.get(position).getTitle());
+
+
+        holder.timestamp.setText(mNotes.get(position).getTimestamp());
+        holder.title.setText(mNotes.get(position).getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return notes.size();
+        return mNotes.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView title, timestamp;
-        OnNoteListener onNoteListener;
+        TextView timestamp, title;
+        OnNoteListener mOnNoteListener;
 
-        public ViewHolder(@NonNull View itemView, OnNoteListener onNoteListener) {
+        public ViewHolder(View itemView, OnNoteListener onNoteListener) {
             super(itemView);
-            title = itemView.findViewById(R.id.note_title);
             timestamp = itemView.findViewById(R.id.note_timestamp);
-            this.onNoteListener = onNoteListener;
+            title = itemView.findViewById(R.id.note_title);
+            mOnNoteListener = onNoteListener;
 
             itemView.setOnClickListener(this);
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(View view) {
             Log.d(TAG, "onClick: " + getAdapterPosition());
-            onNoteListener.onNoteClick(getAdapterPosition());
+            mOnNoteListener.onNoteClick(getAdapterPosition());
         }
     }
 
-    public interface OnNoteListener {
+    public interface OnNoteListener{
         void onNoteClick(int position);
     }
 }

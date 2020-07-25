@@ -19,13 +19,13 @@ public class Note implements Parcelable {
     @ColumnInfo(name = "content")
     private String content;
 
-    @ColumnInfo(name = "timestampe")
-    private String timestampe;
+    @ColumnInfo(name = "timestamp")
+    private String timestamp;
 
-    public Note(String title, String content, String timestampe) {
+    public Note(String title, String content, String timestamp) {
         this.title = title;
         this.content = content;
-        this.timestampe = timestampe;
+        this.timestamp = timestamp;
     }
 
     @Ignore
@@ -33,11 +33,12 @@ public class Note implements Parcelable {
 
     }
 
+
     protected Note(Parcel in) {
         id = in.readInt();
         title = in.readString();
         content = in.readString();
-        timestampe = in.readString();
+        timestamp = in.readString();
     }
 
     public static final Creator<Note> CREATOR = new Creator<Note>() {
@@ -76,23 +77,23 @@ public class Note implements Parcelable {
         this.content = content;
     }
 
-    public String getTimestampe() {
-        return timestampe;
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    public void setTimestampe(String timestampe) {
-        this.timestampe = timestampe;
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     @Override
     public String toString() {
         return "Note{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", timestampe='" + timestampe + '\'' +
+                ", timestamp='" + timestamp + '\'' +
                 '}';
     }
+
 
     @Override
     public int describeContents() {
@@ -100,10 +101,10 @@ public class Note implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(title);
-        dest.writeString(content);
-        dest.writeString(timestampe);
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(title);
+        parcel.writeString(content);
+        parcel.writeString(timestamp);
     }
 }
