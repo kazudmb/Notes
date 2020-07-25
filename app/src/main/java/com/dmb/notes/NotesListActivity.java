@@ -1,8 +1,10 @@
 package com.dmb.notes;
 
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +15,11 @@ import android.view.View;
 
 import com.dmb.notes.adapters.NotesRecyclerAdapter;
 import com.dmb.notes.models.Note;
+import com.dmb.notes.persistence.NoteRepository;
 import com.dmb.notes.util.VerticalSpacingItemDecorator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NotesListActivity extends AppCompatActivity implements
         NotesRecyclerAdapter.OnNoteListener,
@@ -30,6 +34,7 @@ public class NotesListActivity extends AppCompatActivity implements
     // vars
     private ArrayList<Note> notes = new ArrayList<>();
     private NotesRecyclerAdapter notesRecyclerAdapter;
+    private NoteRepository noteRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +44,29 @@ public class NotesListActivity extends AppCompatActivity implements
 
         findViewById(R.id.fab).setOnClickListener(this);
 
+        noteRepository = new NoteRepository(this);
+
         initRecyclerView();
-        insertFakeNotes();
+        retrieveNotes();
+//        insertFakeNotes();
 
         setSupportActionBar((Toolbar)findViewById(R.id.notes_toolbar));
         setTitle("Notes");
+    }
+
+    private void retrieveNotes(){
+        noteRepository.retrieveNotesTask().observe(this, new Observer<List<Note>>() {
+            @Override
+            public void onChanged(@Nullable List<Note> notes) {
+                if(notes.size() > 0){
+                    notes.clear();
+                }
+                if(notes != null){
+                    notes.addAll(notes);
+                }
+                notesRecyclerAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void insertFakeNotes(){
