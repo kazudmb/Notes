@@ -3,6 +3,7 @@ package com.dmb.notes.persistence;
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
 
+import com.dmb.notes.async.DeleteAsyncTask;
 import com.dmb.notes.async.InsertAsyncTask;
 import com.dmb.notes.models.Note;
 
@@ -29,6 +30,6 @@ public class NoteRepository {
     }
 
     public void deleteNoteTask(Note note){
-
+        new DeleteAsyncTask(mNoteDatabase.getNoteDao()).execute(note);
     }
 }
