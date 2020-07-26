@@ -78,8 +78,12 @@ public class NoteActivity extends AppCompatActivity implements
         if(mIsNewNote){
             saveNewNote();
         }else{
-            // update note
+            updateNote();
         }
+    }
+
+    private void updateNote(){
+        mNoteRepository.updateNoteTask(mFinalNote);
     }
 
     public void saveNewNote() {
@@ -98,7 +102,12 @@ public class NoteActivity extends AppCompatActivity implements
     private boolean getIncomingIntent(){
         if(getIntent().hasExtra("selected_note")){
             mNoteInitial = getIntent().getParcelableExtra("selected_note");
-            mFinalNote = getIntent().getParcelableExtra("selected_note");
+
+            mFinalNote = new Note();
+            mFinalNote.setTitle(mNoteInitial.getTitle());
+            mFinalNote.setContent(mNoteInitial.getContent());
+            mFinalNote.setTimestamp(mNoteInitial.getTimestamp());
+            mFinalNote.setId(mNoteInitial.getId());
 
             mMode = EDIT_MODE_ENABLED;
             mIsNewNote = false;
@@ -160,6 +169,7 @@ public class NoteActivity extends AppCompatActivity implements
 
             if(!mFinalNote.getContent().equals(mNoteInitial.getContent())
                     || !mFinalNote.getTitle().equals(mNoteInitial.getTitle())){
+                Log.d(TAG, "disableEditMode: called");
                 saveChanges();
             }
         }
